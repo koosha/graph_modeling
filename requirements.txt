@@ -1,0 +1,8 @@
+networkx>=2.8.0
+node2vec>=0.4.3
+gensim>=4.1.2
+pyvis>=0.3.2
+matplotlib>=3.5.1
+scikit-learn>=1.0.2
+numpy>=1.21.0
+jupyter>=1.0.0 
