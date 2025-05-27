@@ -44,4 +44,7 @@ Thumbs.db
 # Project specific
 *.html
 !graph_step_1.html
-!graph_step_2.html 
+!graph_step_2.html
+!archive/graph_step_3.html
+!archive/graph_structure.html
+!archive/graph_structure_s1.html 
