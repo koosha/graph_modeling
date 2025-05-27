@@ -42,4 +42,6 @@ ehthumbs.db
 Thumbs.db
 
 # Project specific
-*.html 
+*.html
+!graph_step_1.html
+!graph_step_2.html 

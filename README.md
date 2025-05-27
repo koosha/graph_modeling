@@ -1,14 +1,6 @@
-# Graph Modeling Project
+# Graph Modeling
 
-This project demonstrates graph modeling and visualization using NetworkX, Node2Vec, and PyVis. It creates a network of individuals and companies, generates node embeddings, and visualizes the graph structure and embeddings.
-
-## Features
-
-- Graph creation with NetworkX
-- Node embeddings using Node2Vec and Word2Vec
-- Interactive graph visualization with PyVis
-- t-SNE visualization of node embeddings
-- Score-based node coloring and tooltips
+This demo project demonstrates graph modeling and visualization using NetworkX, Node2Vec, and PyVis. It creates a network of individuals and companies, generates node embeddings, and visualizes the graph structure and embeddings.
 
 ## Requirements
 
@@ -30,7 +22,7 @@ git clone [your-repository-url]
 2. Create a virtual environment and activate it:
 ```bash
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  
 ```
 
 3. Install the required packages:
@@ -38,14 +30,6 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## Usage
-
-1. Open the Jupyter notebook:
-```bash
-jupyter notebook main.ipynb
-```
-
-2. Run the cells to generate the graph and visualizations.
 
 ## Project Structure
 
