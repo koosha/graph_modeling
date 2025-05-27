@@ -12,24 +12,6 @@ This demo project demonstrates graph modeling and visualization using NetworkX, 
 - Matplotlib
 - scikit-learn
 
-## Installation
-
-1. Clone the repository:
-```bash
-git clone [your-repository-url]
-```
-
-2. Create a virtual environment and activate it:
-```bash
-python -m venv venv
-source venv/bin/activate  
-```
-
-3. Install the required packages:
-```bash
-pip install -r requirements.txt
-```
-
 
 ## Project Structure
 
