@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "blue", "id": "Individual A", "label": "Individual A", "shape": "dot", "title": "Embedding: [-3.40414457e-02 -6.39504790e-02  2.45549917e-01  2.52686292e-01\n -1.66305408e-01 -1.97489560e-01  1.60516903e-01  2.93375254e-01\n -4.05251570e-02  9.21925623e-03  3.25882643e-01  7.66278356e-02\n  1.09557509e-01 -1.25492951e-02 -1.27664596e-01 -3.68587580e-03\n -4.95789386e-03  1.30806834e-01 -1.90484509e-01  1.63133934e-01\n  2.45670944e-01  2.45916069e-01  3.32231581e-01 -2.16263175e-01\n  1.09788373e-01  2.07608104e-01 -1.73373282e-01  9.71873403e-02\n -8.97177979e-02 -6.84233829e-02 -9.36126895e-03 -5.00946678e-02\n -1.33488491e-01 -2.19043717e-01 -4.22395989e-02  6.91974461e-02\n  4.72146645e-02  8.46944824e-02  4.16207761e-01  1.21637341e-02\n  7.16175959e-02  7.43286088e-02  2.49885004e-02 -7.97510445e-02\n -9.96137932e-02  3.21131758e-02 -2.98818311e-04 -8.77756067e-03\n -1.27658114e-01 -1.02701254e-01  2.10825562e-01  1.05607308e-01\n  1.52608538e-02  2.67343611e-01  1.27578229e-01 -1.25689089e-01\n  2.82314401e-02 -1.79327250e-01  1.10992175e-02 -8.49100947e-02\n  1.25645086e-01 -1.16542608e-01 -1.52580425e-01  3.72141302e-02]"}, {"color": "blue", "id": "Company X", "label": "Company X", "shape": "dot", "title": "Embedding: [-0.03804016 -0.06526791  0.21190579  0.22203465 -0.13821205 -0.20059887\n  0.15709093  0.2771699  -0.05354349  0.0241721   0.3241472   0.08787066\n  0.10399512  0.00041501 -0.12220008 -0.00787327 -0.01218537  0.1373615\n -0.17516917  0.15292907  0.2472032   0.23441936  0.3041931  -0.20224501\n  0.09672444  0.18050902 -0.18433693  0.09722145 -0.0807723  -0.07122163\n -0.02528348 -0.06079461 -0.09847464 -0.19419536 -0.03833149  0.07409646\n  0.05880336  0.05888869  0.40298212  0.02604376  0.07567678  0.06596192\n  0.02452692 -0.08684371 -0.11521402  0.05539259  0.00054622 -0.0218097\n -0.11028098 -0.09130718  0.19719912  0.11701752  0.02448458  0.22840415\n  0.14182948 -0.10607591  0.04157282 -0.19271038  0.03059943 -0.085388\n  0.14176233 -0.130428   -0.1651132   0.04134235]"}, {"color": "blue", "id": "Individual B", "label": "Individual B", "shape": "dot", "title": "Embedding: [-0.03697469 -0.05983595  0.23567283  0.23247103 -0.14679809 -0.21085495\n  0.13008656  0.27324414 -0.04110944  0.0065793   0.32433963  0.08000463\n  0.12636852 -0.01769928 -0.1376988  -0.02556725 -0.03320889  0.13979258\n -0.17788109  0.12564439  0.2380253   0.23437613  0.31200138 -0.2003025\n  0.08996792  0.2036832  -0.18006252  0.10738973 -0.09405043 -0.05732507\n -0.02971063 -0.05331093 -0.11038458 -0.18391028 -0.02142552  0.05442897\n  0.04666909  0.05163819  0.3972826   0.02386792  0.05731284  0.0686765\n  0.00252942 -0.07179937 -0.1101798   0.04456244  0.00772259 -0.01503437\n -0.11616706 -0.09157877  0.19860472  0.09698549  0.00503019  0.24296658\n  0.1291094  -0.11440055  0.03874741 -0.1935886   0.00161451 -0.06826764\n  0.13249259 -0.13425317 -0.14808606  0.02339407]"}, {"color": "red", "id": "Company Y", "label": "Company Y", "shape": "dot", "title": "Embedding: [-0.03727104 -0.0477238   0.2349327   0.23896621 -0.15138155 -0.20356579\n  0.14877705  0.3044486  -0.03396005 -0.00310296  0.32431427  0.08932616\n  0.14988653 -0.00739935 -0.15900475 -0.03554558 -0.03594296  0.15970995\n -0.15591538  0.1289703   0.2321215   0.23325872  0.3448155  -0.23099983\n  0.09829979  0.22137244 -0.17352773  0.1095536  -0.07427975 -0.05658035\n -0.00971629 -0.03247182 -0.12376423 -0.21206158 -0.0258932   0.07051179\n  0.0272191   0.08131976  0.4071676   0.00086344  0.07072198  0.0636613\n -0.01858176 -0.08092906 -0.09228282  0.03898157 -0.00821959 -0.03855754\n -0.14268346 -0.05629293  0.19122899  0.12362197  0.01055201  0.2651927\n  0.13173288 -0.13316332  0.03906067 -0.19710638  0.03014711 -0.11143313\n  0.1281574  -0.12888578 -0.17043151  0.01653035]"}, {"color": "blue", "id": "Individual C", "label": "Individual C", "shape": "dot", "title": "Embedding: [-0.03169608 -0.03532232  0.25033492  0.22951724 -0.1528302  -0.22995512\n  0.1289745   0.31474757 -0.01925841  0.01077101  0.31120306  0.09594873\n  0.16274814  0.01765411 -0.20432156 -0.03298459 -0.05999845  0.18711889\n -0.15647534  0.03784856  0.25685474  0.22219235  0.37030667 -0.24293208\n  0.12526533  0.21626699 -0.17504422  0.1337675  -0.08472651 -0.05116447\n -0.05818406 -0.02554472 -0.06687994 -0.20859985 -0.01914344  0.04141888\n  0.0485961   0.07382736  0.3778494  -0.07222357  0.01363644  0.09399772\n -0.10529209 -0.12377873 -0.0513118   0.06428107 -0.04007044 -0.01502836\n -0.14210998 -0.00570527  0.1341123   0.12526807 -0.03945611  0.25358886\n  0.16755465 -0.16655688  0.04145966 -0.20192142  0.00708957 -0.0929178\n  0.07983704 -0.14788374 -0.18002875 -0.05317073]"}, {"color": "blue", "id": "Company Z", "label": "Company Z", "shape": "dot", "title": "Embedding: [-0.03150372 -0.02231198  0.2524994   0.20140368 -0.13348936 -0.22269182\n  0.11529557  0.29884002  0.00423318  0.02507223  0.3010857   0.11065246\n  0.18574537 -0.00192722 -0.21320237 -0.03207217 -0.07456043  0.19834761\n -0.12649627  0.03814135  0.24085365  0.20812301  0.36767933 -0.2569714\n  0.11374156  0.22658631 -0.16984677  0.13556089 -0.05654502 -0.03134456\n -0.04817905 -0.00872666 -0.09007161 -0.18707782 -0.01806715  0.03341366\n  0.0359695   0.09246651  0.37647665 -0.08205623  0.033848    0.09480917\n -0.10787352 -0.12974164 -0.03472011  0.07415657 -0.03084851 -0.04154778\n -0.16186605 -0.0155201   0.14524707  0.11040381 -0.05126116  0.25386304\n  0.15799531 -0.17042509  0.03361211 -0.18853025  0.01133629 -0.12338826\n  0.07683027 -0.15431416 -0.1690592  -0.05150591]"}, {"color": "blue", "id": "Individual D", "label": "Individual D", "shape": "dot", "title": "Embedding: [-0.0263613  -0.04471749  0.23706347  0.21717864 -0.12837529 -0.22107576\n  0.09867316  0.3071549  -0.00765646  0.01861789  0.28241035  0.09528248\n  0.18688835  0.02014429 -0.20740096 -0.02933445 -0.08220564  0.1976971\n -0.1454254   0.03709779  0.25579053  0.2108097   0.37260908 -0.25445563\n  0.12336178  0.2390169  -0.18323308  0.11742798 -0.08276263 -0.04983458\n -0.05293839 -0.033391   -0.06654488 -0.2034939   0.00097828  0.05018391\n  0.02152461  0.09030934  0.37863928 -0.08370284  0.01183806  0.08187173\n -0.11589926 -0.11941829 -0.0455576   0.06877928 -0.02849246 -0.03236305\n -0.16075298 -0.00828926  0.13803507  0.1287968  -0.03071748  0.2590177\n  0.15504374 -0.16675694  0.02677151 -0.19100201  0.01387007 -0.11281612\n  0.06470346 -0.15992528 -0.18728846 -0.0580348 ]"}]);
+                  edges = new vis.DataSet([{"from": "Individual A", "to": "Company X"}, {"from": "Individual A", "to": "Individual B"}, {"from": "Company X", "to": "Company Y"}, {"from": "Individual B", "to": "Company Y"}, {"from": "Company Y", "to": "Individual C"}, {"from": "Individual C", "to": "Company Z"}, {"from": "Individual C", "to": "Individual D"}, {"from": "Company Z", "to": "Individual D"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
