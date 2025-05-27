@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "blue", "id": "Individual A", "label": "Individual A", "shape": "dot", "title": "Embedding: [ 0.07435931 -0.17835031  0.6918942  -0.07263972 -0.2920673  -0.61034673\n  0.03568822  0.41057655 -0.059482    0.00736188  0.5938947   0.16851655\n  0.16170324  0.14168042 -0.3002715  -0.10574443  0.04057176  0.16286963\n -0.02352163 -0.1506181   0.28636754 -0.02374647  0.15132977  0.14463519\n  0.15265104 -0.06042626 -0.31434295  0.17417304 -0.16784632 -0.06711553\n -0.12184649 -0.02209012 -0.00507455 -0.20389839  0.24104081 -0.18053298\n  0.03478452 -0.32782188  0.4348595  -0.15948375 -0.17287526  0.4707489\n -0.06635242 -0.37204504 -0.07425693 -0.33929852 -0.09547464  0.18918785\n  0.27685308  0.2773912   0.11424891  0.06965987 -0.44377822 -0.15319303\n  0.5073449   0.23806609  0.18365423 -0.38589576  0.11987562  0.1416376\n  0.14498954 -0.14391737 -0.3723554  -0.15051396]"}, {"color": "blue", "id": "Company X", "label": "Company X", "shape": "dot", "title": "Embedding: [ 0.12213579 -0.21530429  0.63415164 -0.06463036 -0.24481192 -0.57101315\n -0.06218459  0.3295367   0.00549719 -0.16040434  0.4911453   0.0817325\n  0.32920665  0.06670099 -0.2822196  -0.18089342 -0.15525083  0.23939016\n  0.07328551 -0.10954749  0.19542545  0.00336205  0.06078903  0.03827984\n  0.04666251  0.01723572 -0.21653703  0.08609591 -0.04546975  0.08378182\n -0.02542021  0.00888446 -0.07027104 -0.18835118  0.299423   -0.09073394\n  0.03807823 -0.22243576  0.29621407 -0.08001825 -0.11503264  0.3307284\n -0.0731325  -0.135508    0.09809331 -0.31841812 -0.06810097 -0.09453338\n  0.2972331   0.27127594  0.10210098  0.11295771 -0.44509163 -0.06167692\n  0.3612383   0.0929554   0.11577561 -0.19484128  0.07164878  0.06620011\n  0.10908026 -0.25661305 -0.29245913 -0.22079805]"}, {"color": "blue", "id": "Individual B", "label": "Individual B", "shape": "dot", "title": "Embedding: [ 0.14056881 -0.10290804  0.6424689   0.05354573 -0.14969859 -0.44779086\n -0.10105827  0.37985593  0.19586183  0.07493854  0.48596814  0.04683098\n  0.35865855 -0.09282627 -0.3606221  -0.02385984  0.0999938   0.21367247\n -0.05805222  0.1414563   0.22320265 -0.02285147  0.3028654   0.08312714\n  0.08631029 -0.02228121 -0.20446119  0.0926395  -0.06009686  0.03136754\n -0.05210486  0.10175852 -0.20667182 -0.18443628  0.14623153 -0.2707679\n -0.07659964 -0.27923444  0.46499908  0.01529894 -0.11716822  0.3805358\n -0.06860165 -0.38912287  0.04392075 -0.2762911  -0.04808443  0.18694371\n  0.05950498  0.1899745   0.04942632 -0.05088643 -0.34898746  0.00503159\n  0.2400091   0.15558685  0.06044492 -0.14862715  0.13811126  0.07457982\n  0.03140987  0.01487445 -0.10256808 -0.10698538]"}, {"color": "blue", "id": "Company Y", "label": "Company Y", "shape": "dot", "title": "Embedding: [ 0.11105103 -0.1680463   0.57098794  0.07655241 -0.14972141 -0.49016583\n -0.13282454  0.2604032   0.03333668 -0.2594895   0.39757094 -0.01210919\n  0.4011302  -0.02031544 -0.30240822 -0.17741755 -0.19619109  0.24163413\n  0.07202555  0.02983918  0.12910481  0.06190925  0.10383403 -0.0051122\n -0.03782131  0.09289148 -0.17383063  0.06488846 -0.08619007  0.12058097\n  0.00363134 -0.02723393 -0.15480629 -0.20860325  0.34864786 -0.08249323\n -0.01327416 -0.2239781   0.29161504  0.02533023 -0.16475073  0.20285763\n -0.08564481 -0.08587587  0.17063163 -0.25423747 -0.02541566 -0.1488049\n  0.20770392  0.27793694  0.03834287  0.14954326 -0.35949096  0.04580868\n  0.26631236 -0.02848532  0.05232083 -0.08227061  0.08655655  0.0516618\n  0.00315306 -0.30337608 -0.19227414 -0.2666362 ]"}, {"color": "blue", "id": "Individual C", "label": "Individual C", "shape": "dot", "title": "Embedding: [-0.02926633 -0.01082746  0.4351565   0.11321539 -0.11034693 -0.37358072\n -0.22301604  0.08737415  0.09440656 -0.42477793  0.24901162 -0.01719885\n  0.32821926 -0.05902687 -0.29022124 -0.26906177 -0.35885337  0.23132311\n  0.11814611  0.11532932  0.02038447  0.04223825  0.10869788 -0.13491406\n -0.23539084  0.33068117 -0.28198114 -0.04677181 -0.10748615  0.03793112\n -0.04122886 -0.02410432 -0.27734077 -0.10869522  0.47036293  0.12965226\n  0.05865864  0.05123239  0.2007511   0.09731233 -0.02514691  0.05055489\n -0.09653632  0.00602165  0.23783468 -0.150918    0.00136777 -0.32201383\n  0.05078327  0.13882762  0.06535897  0.24838956 -0.1088401   0.23031878\n  0.26511458 -0.03742024  0.12728298  0.01350204 -0.00192051 -0.08406083\n -0.06274687 -0.45738766 -0.11302033 -0.24790041]"}, {"color": "blue", "id": "Company Z", "label": "Company Z", "shape": "dot", "title": "Embedding: [-0.13260965  0.03170452  0.4039922   0.14500134 -0.04975392 -0.33472797\n -0.19120128 -0.02761854  0.08666578 -0.62525153  0.152241   -0.04354543\n  0.15819226 -0.06746867 -0.34423816 -0.3506288  -0.40716052  0.17900659\n  0.23993082  0.23390575 -0.01769154  0.00652224  0.24056531 -0.22483218\n -0.3464027   0.5848173  -0.39401555 -0.08188869 -0.14226621 -0.15605249\n  0.07186568  0.01288819 -0.54329586 -0.05633106  0.46532074  0.36711374\n  0.17385411  0.3294004   0.22343726  0.16853195  0.21154864 -0.03098428\n -0.11522208 -0.07493825  0.31789556 -0.22178844  0.07057998 -0.43912992\n -0.07332525  0.01896351 -0.00450412  0.3428654   0.03957138  0.4956371\n  0.35379872 -0.00797722  0.26021692 -0.02311038 -0.09875281 -0.1886359\n  0.01308472 -0.54575413 -0.0957558  -0.09823861]"}, {"color": "blue", "id": "Individual D", "label": "Individual D", "shape": "dot", "title": "Embedding: [-0.10179787  0.11032234  0.31983367  0.21211904 -0.07058682 -0.339705\n -0.23310864  0.0110284   0.01223962 -0.46166644  0.13016197 -0.0196251\n  0.1990273  -0.07251973 -0.20406157 -0.17843038 -0.40756527  0.27507374\n  0.16412546  0.34887758  0.07456891  0.02709899  0.28257626 -0.26118287\n -0.24998547  0.5604296  -0.48279285 -0.20206498 -0.18420881 -0.11488549\n -0.13516638  0.02581554 -0.41088757 -0.17689185  0.5560745   0.3670755\n  0.1680375   0.40818834  0.22476849 -0.01147991  0.06195975  0.13631234\n -0.09056837 -0.09593836  0.26714906 -0.07127579 -0.09488166 -0.4180154\n -0.11359797  0.08052326  0.14582863  0.29781383  0.19758679  0.45668757\n  0.38563713  0.01857353  0.09333116  0.05976315 -0.08611088 -0.27069208\n -0.17726214 -0.5879632  -0.08266907 -0.19048876]"}, {"color": "grey", "id": "Company A", "label": "Company A", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Company B", "label": "Company B", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Company C", "label": "Company C", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Company D", "label": "Company D", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Individual E", "label": "Individual E", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Individual F", "label": "Individual F", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Individual G", "label": "Individual G", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Individual H", "label": "Individual H", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Company E", "label": "Company E", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Company F", "label": "Company F", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Company G", "label": "Company G", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Company H", "label": "Company H", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Individual I", "label": "Individual I", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Individual J", "label": "Individual J", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Individual K", "label": "Individual K", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Individual L", "label": "Individual L", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Individual M", "label": "Individual M", "shape": "dot", "title": "No embedding"}, {"color": "grey", "id": "Individual N", "label": "Individual N", "shape": "dot", "title": "No embedding"}]);
+                  edges = new vis.DataSet([{"from": "Individual A", "to": "Company X"}, {"from": "Individual A", "to": "Individual B"}, {"from": "Individual A", "to": "Company A"}, {"from": "Individual A", "to": "Individual E"}, {"from": "Company X", "to": "Company Y"}, {"from": "Individual B", "to": "Company Y"}, {"from": "Individual B", "to": "Company B"}, {"from": "Individual B", "to": "Individual F"}, {"from": "Company Y", "to": "Individual C"}, {"from": "Individual C", "to": "Company Z"}, {"from": "Individual C", "to": "Individual D"}, {"from": "Company Z", "to": "Individual D"}, {"from": "Company Z", "to": "Company C"}, {"from": "Company Z", "to": "Individual G"}, {"from": "Individual D", "to": "Company D"}, {"from": "Individual D", "to": "Individual H"}, {"from": "Company A", "to": "Company E"}, {"from": "Company B", "to": "Company F"}, {"from": "Company C", "to": "Company G"}, {"from": "Company D", "to": "Company H"}, {"from": "Individual E", "to": "Individual I"}, {"from": "Individual F", "to": "Individual J"}, {"from": "Individual G", "to": "Individual K"}, {"from": "Individual H", "to": "Individual L"}, {"from": "Company E", "to": "Company F"}, {"from": "Company G", "to": "Company H"}, {"from": "Individual I", "to": "Individual M"}, {"from": "Individual I", "to": "Individual J"}, {"from": "Individual J", "to": "Individual N"}, {"from": "Individual K", "to": "Individual L"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
